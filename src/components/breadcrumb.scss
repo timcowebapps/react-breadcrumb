@@ -1,0 +1,22 @@
+
+
+.breadcrumb {
+	@include list-unstyled();
+	margin: 0;
+
+	li {
+		/* #region Цвет символа */
+		color: $breadcrumb-color;
+		/* #endregion*/
+
+		@include list-inline-item();
+		padding: 0 10px 0 0;
+
+		a { color: $breadcrumb-link-color }
+	}
+}
+
+.breadcrumb > li + li:before {
+	content: '/';
+	padding-right: 10px;
+}
