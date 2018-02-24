@@ -4,7 +4,7 @@
 	@include list-unstyled();
 	margin: 0;
 
-	li {
+	@include element('item') {
 		/* #region Цвет символа */
 		color: $breadcrumb-color;
 		/* #endregion*/

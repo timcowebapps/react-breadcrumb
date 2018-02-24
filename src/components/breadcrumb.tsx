@@ -13,16 +13,36 @@ const Breadcrumb: React.StatelessComponent<any> = (props: BreadcrumbProps.IProps
 	const { schema, ...attributes } = props;
 	const options = _.merge({}, this.default.defaultProps.schema, schema);
 
+	const classes = options.properties.classes;
+	const itemLength = schema.items.length;
+
+	// https://timcowebapps.github.io/react-breadcrumb/ru
+	const microdataRoot = {
+		href: '/ru',
+		content: 'Russian'
+	}
+
 	return (
-		<ul className={options.properties.classes.pipeline[options.properties.classes.block]}>
+		<ul itemScope itemType="https://schema.org/BreadcrumbList" className={classes.pipeline[classes.block]}>
+			<span itemScope itemProp="itemListElement" itemType="https://schema.org/ListItem">
+				<link href={microdataRoot.href} itemProp="item" />
+				<meta content={microdataRoot.content} itemProp="name" />
+			</span>
+
 			{schema.items.map((item: IJsonSchema, idx: number) => {
-				return (
-					<li key={idx} className=""> {
-						_.isEmpty(item.properties.link) ? item.properties.title :
-							<a href={item.properties.link}>{item.properties.title}</a>
-					}
-					</li>
-				)
+				if (idx == itemLength - 1 && _.isEmpty(item.properties.link)) {
+					return (
+						<li className={Classes.bem(classes.pipeline, classes.block, { element: 'item' })} key={idx}>
+							{item.properties.title}
+						</li>
+					)
+				} else {
+					return (
+						<li className={Classes.bem(classes.pipeline, classes.block, { element: 'item' })} key={idx} itemScope itemProp="itemListElement" itemType="https://schema.org/ListItem">
+							<a itemProp="item" href={item.properties.link}><span itemProp="name">{item.properties.title}</span></a>
+						</li>
+					)
+				}
 			})}
 		</ul>
 	);
